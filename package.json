@@ -1,0 +1,23 @@
+{
+  "name": "backend-parkol",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fach3f/BackendParkol.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fach3f/BackendParkol/issues"
+  },
+  "homepage": "https://github.com/fach3f/BackendParkol#readme",
+  "description": "",
+  "dependencies": {
+    "@hapi/hapi": "^21.3.2"
+  }
+}
