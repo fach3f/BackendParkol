@@ -10,7 +10,13 @@ const dbConfig = {
 };
 
 const createConnection = async () => {
-  return await mysql.createConnection(dbConfig);
-};
-
-module.exports = createConnection;
+    try {
+      return await mysql.createConnection(dbConfig);
+    } catch (error) {
+      console.error('Error creating database connection:', error);
+      throw error; // Propagate the error
+    }
+  };
+  
+  module.exports = createConnection;
+  
