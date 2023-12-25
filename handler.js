@@ -45,28 +45,28 @@ const register = async (request, h) => {
   // Handler Login
   
   const login = async (request, h) => {
-    const { username, email, password } = request.payload;
-    console.log(username, email, password);
-
-    if (!username && !email) {
-      return "Login gagal. Harap masukkan username atau email.";
+    const { username, password } = request.payload;
+  
+    if (!username) {
+      return h.response({
+        status: "Failed",
+        message: "Login gagal. Harap masukkan username.",
+        code: 400,
+      });
     }
+  
     if (!password) {
-      return "Login gagal. Harap masukkan password.";
+      return h.response({
+        status: "Failed",
+        message: "Login gagal. Harap masukkan password.",
+        code: 400,
+      });
     }
   
     const db = await createConnection();
   
-    let query = "";
-    let queryParams = [];
-  
-    if (username) {
-      query = "SELECT * FROM users WHERE username = ?";
-      queryParams = [username];
-    } else if (email) {
-      query = "SELECT * FROM users WHERE email = ?";
-      queryParams = [email];
-    }
+    const query = "SELECT * FROM users WHERE username = ?";
+    const queryParams = [username];
   
     const [rows, fields] = await db.execute(query, queryParams);
   
@@ -84,17 +84,19 @@ const register = async (request, h) => {
           status: "Success",
           message: "Berhasil Login",
           code: 200,
+          token: token, // Include the token in the response
         });
       }
     }
   
     return h.response({
       status: "Failed",
-      message: "Login gagal. Periksa kembali username, email, dan password Anda.",
-      code: 404,
+      message: "Login gagal. Periksa kembali username dan password Anda.",
+      code: 401,
     });
   };
-
-module.exports = {
+  
+  module.exports = {
     register,
-    login};
+    login,
+  };
