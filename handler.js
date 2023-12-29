@@ -152,7 +152,7 @@ const keluarparkir = async (request, h) => {
         // Perbarui waktu keluar pada record kendaraan yang keluar
         await db.execute("UPDATE parkir SET waktu_keluar = ? WHERE id = ?", [waktuKeluar, id]);
 
-        // Ambil data parkir untuk mendapatkan waktu masuk
+        // Ambil data parkir untuk mendapatkan waktu masuk dan jenis kendaraan
         const [rows] = await db.execute("SELECT * FROM parkir WHERE id = ?", [id]);
         const waktuMasuk = new Date(rows[0].waktu_masuk);
 
@@ -173,8 +173,16 @@ const keluarparkir = async (request, h) => {
             });
         }
 
-        // Hapus ID dari tabel parkir setelah mendapatkan harga
+        // menambahkan data ke total_pengunjung
+        await db.execute("INSERT INTO total_pengunjung (jenis, harga, waktu_masuk, waktu_keluar) VALUES (?, ?, ?, ?)", [rows[0].jenis, hargaParkir, waktuMasuk , waktuKeluar]);
+
+        // menghapus data dari table parkir
         await db.execute("DELETE FROM parkir WHERE id = ?", [id]);
+
+       // jika sudah lebih dari 7 hari data akan terhapus
+        const tujuhHariYangLalu = new Date();
+        tujuhHariYangLalu.setDate(tujuhHariYangLalu.getDate() - 7);
+        await db.execute("DELETE FROM total_pengunjung WHERE waktu_keluar < ?", [tujuhHariYangLalu]);
 
         return h.response({
             status: "Success",
@@ -191,6 +199,7 @@ const keluarparkir = async (request, h) => {
         });
     }
 };
+
 
 
 
