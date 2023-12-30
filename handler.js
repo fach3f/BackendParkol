@@ -68,14 +68,20 @@ const login = async (request, h) => {
                     code: 200,
                     token: token,
                 });
+            } else {
+                return h.response({
+                    status: "Failed",
+                    message: "Login gagal. Password salah.",
+                    code: 401,
+                });
             }
+        } else {
+            return h.response({
+                status: "Failed",
+                message: "Login gagal. Pengguna tidak ditemukan.",
+                code: 401,
+            });
         }
-
-        return h.response({
-            status: "Failed",
-            message: "Login gagal. Periksa kembali username dan password Anda.",
-            code: 401,
-        });
     } catch (error) {
         console.error('Error during login:', error);
         return h.response({
@@ -85,6 +91,7 @@ const login = async (request, h) => {
         });
     }
 };
+
 
 //handler masuk parkir
 
