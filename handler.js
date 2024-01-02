@@ -278,6 +278,37 @@ const getTotalKendaraanLantai2 = async (request, h) => {
     }
 };
 
+const getTotalPengunjungHariSebelumnya = async (request, h) => {
+    try {
+        const { jenis } = request.params; // Ambil parameter jenis kendaraan dari URL
+        const db = await createConnection();
+
+        // Ambil tanggal 1 hari sebelumnya
+        const satuHariSebelumnya = new Date();
+        satuHariSebelumnya.setDate(satuHariSebelumnya.getDate() - 1);
+
+        // Ambil data total pengunjung untuk jenis dan tanggal tersebut
+        const [rows] = await db.execute(
+            "SELECT jenis, SUM(harga) AS total_harga FROM total_pengunjung WHERE jenis = ? AND waktu_keluar >= ? AND waktu_keluar < ? GROUP BY jenis",
+            [jenis, satuHariSebelumnya, new Date()]
+        );
+
+        return h.response({
+            status: "Success",
+            message: `Berhasil mendapatkan total pengunjung ${jenis} hari sebelumnya`,
+            tanggal: satuHariSebelumnya.toISOString().split('T')[0], // Format tanggal sebagai string (YYYY-MM-DD)
+            code: 200,
+            data: rows,
+        });
+    } catch (error) {
+        console.error(`Error getting total pengunjung ${jenis} hari sebelumnya:`, error);
+        return h.response({
+            status: "Failed",
+            message: `Terjadi kesalahan internal saat mendapatkan total pengunjung ${jenis} hari sebelumnya.`,
+            code: 500,
+        });
+    }
+};
 
 
 module.exports = {
@@ -288,4 +319,5 @@ module.exports = {
     getParkirData,
     getTotalKendaraanLantai1,
     getTotalKendaraanLantai2,
+    getTotalPengunjungHariSebelumnya,
 };

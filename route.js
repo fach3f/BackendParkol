@@ -6,6 +6,7 @@ const {
     getParkirData,
     getTotalKendaraanLantai1,
     getTotalKendaraanLantai2,
+    getTotalPengunjungHariSebelumnya,
   } = require("./handler");
 
   const routes = [
@@ -39,12 +40,15 @@ const {
       path: '/total-kendaraan-lantai-1',
       handler: getTotalKendaraanLantai1,
     },
-
-  // Route to get the total number of vehicles on lantai 2
     {
       method: 'GET',
       path: '/total-kendaraan-lantai-2',
       handler: getTotalKendaraanLantai2,
+    },
+    {
+      method: 'GET',
+      path: '/totalpengunjung-hari/{jenis}',
+      handler: getTotalPengunjungHariSebelumnya,
     },
 ];
 
