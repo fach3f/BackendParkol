@@ -207,6 +207,76 @@ const keluarparkir = async (request, h) => {
     }
 };
 
+// handler untuk menampilkan data di database parkir
+const getParkirData = async (request, h) => {
+    try {
+        const db = await createConnection();
+        const [rows] = await db.execute("SELECT * FROM parkir");
+        
+        return h.response({
+            status: "Success",
+            message: "Berhasil mendapatkan data parkir",
+            code: 200,
+            data: rows,
+        });
+    } catch (error) {
+        console.error('Error getting parkir data:', error);
+        return h.response({
+            status: "Failed",
+            message: "Terjadi kesalahan internal saat mendapatkan data parkir.",
+            code: 500,
+        });
+    }
+};
+
+// handler untuk menampilkan total kendaraan di lantai 1
+const getTotalKendaraanLantai1 = async (request, h) => {
+    try {
+        const db = await createConnection();
+        const [rows] = await db.execute("SELECT COUNT(*) AS total_kendaraan FROM parkir WHERE lantai = 'lantai 1'");
+        const [row] = await db.execute("SELECT * FROM parkir WHERE lantai = 'lantai 1'");
+        
+        return h.response({
+            status: "Success",
+            message: "Berhasil mendapatkan total kendaraan di lantai 1",
+            code: 200,
+            totalKendaraan: rows[0].total_kendaraan,
+            data: row,
+        });
+    } catch (error) {
+        console.error('Error getting total kendaraan lantai 1:', error);
+        return h.response({
+            status: "Failed",
+            message: "Terjadi kesalahan internal saat mendapatkan total kendaraan lantai 1.",
+            code: 500,
+        });
+    }
+};
+
+// handler untuk menampilkan total kendaraan di lantai 2
+const getTotalKendaraanLantai2 = async (request, h) => {
+    try {
+        const db = await createConnection();
+        const [rows] = await db.execute("SELECT COUNT(*) AS total_kendaraan FROM parkir WHERE lantai = 'lantai 2'");
+        const [row] = await db.execute("SELECT * FROM parkir WHERE lantai = 'lantai 2'");
+
+        return h.response({
+            status: "Success",
+            message: "Berhasil mendapatkan total kendaraan di lantai 2",
+            code: 200,
+            totalKendaraan: rows[0].total_kendaraan,
+            data: row,
+            
+        });
+    } catch (error) {
+        console.error('Error getting total kendaraan lantai 2:', error);
+        return h.response({
+            status: "Failed",
+            message: "Terjadi kesalahan internal saat mendapatkan total kendaraan lantai 2.",
+            code: 500,
+        });
+    }
+};
 
 
 
@@ -215,4 +285,7 @@ module.exports = {
     login,
     masukparkir,
     keluarparkir,
+    getParkirData,
+    getTotalKendaraanLantai1,
+    getTotalKendaraanLantai2,
 };
