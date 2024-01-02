@@ -296,9 +296,12 @@ const getTotalPengunjungHariSebelumnya = async (request, h) => {
         return h.response({
             status: "Success",
             message: `Berhasil mendapatkan total pengunjung ${jenis} hari sebelumnya`,
-            tanggal: satuHariSebelumnya.toISOString().split('T')[0], // Format tanggal sebagai string (YYYY-MM-DD)
             code: 200,
-            data: rows,
+            data: {
+                jenis: jenis,
+                total_harga: rows[0].total_harga,
+                tanggal: satuHariSebelumnya.toISOString().split('T')[0], // Format tanggal sebagai string (YYYY-MM-DD)
+            },
         });
     } catch (error) {
         console.error(`Error getting total pengunjung ${jenis} hari sebelumnya:`, error);
@@ -309,6 +312,7 @@ const getTotalPengunjungHariSebelumnya = async (request, h) => {
         });
     }
 };
+
 
 
 module.exports = {
