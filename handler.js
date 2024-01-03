@@ -351,7 +351,7 @@
             );
       
             const result = {
-              [`average_visitors${daysAgo}`]: rows.length > 0 ? rows[0].total_unique_visitors / daysAgo : 0,
+              [`average_visitors${daysAgo}`]: rows.length > 0 ? Math.floor(rows[0].total_unique_visitors / daysAgo) : 0,
               [`${daysAgo}hariyanglalu`]: startDate.toISOString().split('T')[1].split('.')[0], // Extracting time part
             };
       
@@ -382,7 +382,7 @@
           });
         }
       };
-
+      
 const getAverageVisitorsByDayOfWeek = async (request, h) => {
   try {
     const db = await createConnection();
