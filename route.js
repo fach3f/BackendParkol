@@ -7,6 +7,10 @@ const {
     getTotalKendaraanLantai1,
     getTotalKendaraanLantai2,
     getTotalPengunjungHariSebelumnya,
+    getAllPengunjung,
+    getAverageVisitorsForLastNDays,
+    getTotalPengunjungAverage,
+    getAverageVisitorsByDayOfWeek,
   } = require("./handler");
 
   const routes = [
@@ -50,6 +54,22 @@ const {
       path: '/totalpengunjung-hari/{jenis}',
       handler: getTotalPengunjungHariSebelumnya,
     },
+    {
+      method: 'GET',
+      path: '/semuapengunjung',
+      handler: getAllPengunjung
+    },
+    {
+      method: 'GET',
+      path: '/average',
+      handler:getTotalPengunjungAverage
+    },
+    {
+      method: 'GET',
+      path: '/average1',
+      handler:getAverageVisitorsByDayOfWeek
+    },
+
 ];
 
 
